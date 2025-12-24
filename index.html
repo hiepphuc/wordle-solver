@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle Solver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Wordle Solver</h1>
+        <p>Nhập từ bạn đã đoán và click vào ô để đổi màu.</p>
+        
+        <div class="board">
+            <input type="text" class="tile" id="tile-0" maxlength="1">
+            <input type="text" class="tile" id="tile-1" maxlength="1">
+            <input type="text" class="tile" id="tile-2" maxlength="1">
+            <input type="text" class="tile" id="tile-3" maxlength="1">
+            <input type="text" class="tile" id="tile-4" maxlength="1">
+        </div>
+
+        <div class="controls">
+            <button id="solve-btn">Tìm gợi ý</button>
+            <button id="reset-btn">Làm mới</button>
+        </div>
+
+        <div class="results">
+            <h3>Các từ gợi ý:</h3>
+            <ul id="word-list">
+                </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #121213; /* Màu nền tối giống game gốc */
+    color: white;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+/* Khu vực chứa 5 ô vuông */
+.board {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Định dạng từng ô vuông */
+.tile {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    text-align: center;
+    text-transform: uppercase; /* Tự động viết hoa */
+    border: 2px solid #3a3a3c;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    caret-color: transparent; /* Ẩn con trỏ nhấp nháy */
+}
+
+.tile:focus {
+    outline: none;
+    border-color: #565758;
+}
+
+/* Các class màu sắc (Quan trọng cho logic sau này) */
+.correct {
+    background-color: #538d4e; /* Màu xanh lá */
+    border-color: #538d4e;
+}
+
+.present {
+    background-color: #b59f3b; /* Màu vàng */
+    border-color: #b59f3b;
+}
+
+.absent {
+    background-color: #3a3a3c; /* Màu xám */
+    border-color: #3a3a3c;
+}
+
+/* Nút bấm */
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #818384;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
