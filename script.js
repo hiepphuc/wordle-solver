@@ -84,3 +84,14 @@ async function init() {
     wordList = words;
     return wordList;
 }
+
+$('#reset-btn').addEventListener('click', () => {
+    for (const tile of $a('.tile')) {
+        tile.value = '';
+        tile.className = 'tile';
+    }
+    $('#word-list').innerHTML = '';
+    /* Thường khi bấm "Làm mới", người dùng sẽ muốn nhập từ tiếp theo ngay lập tức, 
+    thêm dòng này vào cuối hàm để con trỏ chuột tự động nhảy về ô đầu tiên */
+    $('#tile-0').focus();
+})
