@@ -41,7 +41,7 @@ $('#solve-btn').addEventListener('click', () => {
         letter: tile.value.toUpperCase(),
         state: tile.className.slice().replace('tile', '').trim()
     }));
-    
+
     // Thuật toán lọc từ
     const filteredWordList = wordList.filter((word) => {
         
@@ -64,4 +64,12 @@ $('#solve-btn').addEventListener('click', () => {
         });
     });
     console.log(`filtered word list: ${filteredWordList}`);
+
+    $('#word-list').innerHTML = '';
+    const wordListHtml = filteredWordList.map(word => {
+        return `
+            <li>${word}</li>
+        `
+    }).join('');
+    $('#word-list').innerHTML = wordListHtml;
 });
