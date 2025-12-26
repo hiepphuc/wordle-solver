@@ -11,8 +11,12 @@ function $(selector) {
 function $a(selector) {
     return document.querySelectorAll(selector);
 }
-//Danh sách các từ để test thuật toán trước khi đưa vào danh sách thật
-const wordList = ['HELLO', 'APPLE', 'WORLD', 'SHAPE', 'PHASE']
+
+// Danh sách các từ
+let wordList = [];
+
+// Khởi tạo danh sách các từ
+init();
 
 // Thêm event click để lắp class correct, present, absent cho phù hợp với các tile
 for (const tile of $a('.tile')) {
@@ -73,3 +77,10 @@ $('#solve-btn').addEventListener('click', () => {
     }).join('');
     $('#word-list').innerHTML = wordListHtml;
 });
+
+async function init() {
+    const response = await fetch('words.json');
+    const words = await response.json();
+    wordList = words;
+    return wordList;
+}
