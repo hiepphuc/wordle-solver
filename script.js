@@ -36,6 +36,12 @@ for (const tile of $a('.tile')) {
         }
         tile.classList.add(className);
     });
+
+    tile.addEventListener('input', () => {
+        if (tile.value && tile.nextElementSibling) {
+            tile.nextElementSibling.focus();
+        }
+    });
 }
 
 /* Tạo ra cấu trúc dữ liệu của các tile (mảng các tile) khi người dùng bấm nút #solve-btn
