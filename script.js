@@ -12,8 +12,8 @@ function $a(selector) {
     return document.querySelectorAll(selector);
 }
 
-// Danh sách các từ
-let wordList = [];
+let wordList = []; // Danh sách từ hiện tại (sẽ bị teo nhỏ dần sau mỗi lần lọc)
+let allWords = []; // Kho lưu trữ gốc (để dùng khi Reset)
 
 // Khởi tạo danh sách các từ
 init();
@@ -56,57 +56,56 @@ for (const tile of $a('.tile')) {
 /* Tạo ra cấu trúc dữ liệu của các tile (mảng các tile) khi người dùng bấm nút #solve-btn
 và thuật toán lọc từ */
 $('#solve-btn').addEventListener('click', () => {
-    const tiles = [...$a('.tile')].map(tile => ({
+    // 1. Lấy dữ liệu từ 5 ô hiện tại
+    const tiles = [...$a('.tile')].map( tile => ({
         letter: tile.value.toUpperCase(),
         state: tile.className.slice().replace('tile', '').trim()
     }));
 
-    // Thuật toán lọc từ
-    const filteredWordList = wordList.filter((word) => {
-
-        return tiles.every(({ letter, state }, index) => {
-            // Nếu ô trống thì coi như thoả mãn, bỏ qua check
-            if (letter === '') return true;
-
-            if (state === 'correct' && word[index] === letter) {
-                return true;
+    // 2. Lọc trực tiếp trên biến wordList (kế thừa kết quả từ lần trước)
+    // gán ngược lại kết quả vào wordList
+    wordList = wordList.filter((word) => {
+        return tiles.every(({letter, state}, index) => {
+            if (letter === '') return true; // Bỏ qua ô trống
+            
+            if (state === 'correct') {
+                return word[index] === letter;
             }
-            else if (state === 'present' && word[index] !== letter && word.includes(letter)) {
-                return true;
+            else if (state === 'present') {
+                return word.includes(letter) && word[index] !== letter;
             }
-            else if (state === 'absent' && !word.includes(letter)) {
-                return true;
+            else if (state === 'absent') {
+                // Logic cơ bản: Từ không được chứa chữ này
+                // (Nâng cao: Nếu chữ này đã xuất hiện ở dạng correct/present chỗ khác thì logic sẽ phức tạp hơn chút, 
+                // nhưng tạm thời ta dùng logic cơ bản này)
+                return !word.includes(letter);
             }
-            else {
-                return false;
-            }
+            return false;
         });
     });
-    console.log(`filtered word list: ${filteredWordList}`);
 
-    $('#word-list').innerHTML = '';
-    const wordListHtml = filteredWordList.map(word => {
-        return `
-            <li>${word}</li>
-        `
-    }).join('');
-    $('#word-list').innerHTML = wordListHtml;
+    console.log(`Còn lại ${wordList.length} từ`);
+
+    // 3. Hiển thị
+    $('#word-list').innerHTML = wordList.map(word => `<li>${word}</li>`).join('');
 });
 
 async function init() {
     const response = await fetch('words.json');
-    const words = await response.json();
-    wordList = words;
-    return wordList;
+    const json = await response.json();
+    allWords = json;      // Lưu vào kho gốc
+    wordList = [...allWords]; // Copy sang danh sách dùng để lọc
 }
 
 $('#reset-btn').addEventListener('click', () => {
+    // ... code xóa ô cũ của bạn giữ nguyên ...
     for (const tile of $a('.tile')) {
         tile.value = '';
         tile.className = 'tile';
     }
-    $('#word-list').innerHTML = '';
-    /* Thường khi bấm "Làm mới", người dùng sẽ muốn nhập từ tiếp theo ngay lập tức, 
-    thêm dòng này vào cuối hàm để con trỏ chuột tự động nhảy về ô đầu tiên */
-    $('#tile-0').focus();
-})
+    
+    // Code thêm mới:
+    wordList = [...allWords]; // Khôi phục lại danh sách đầy đủ từ kho gốc
+    $('#word-list').innerHTML = ''; // Xóa danh sách gợi ý trên màn hình
+    $a('.tile')[0].focus(); // Focus vào ô đầu
+});
