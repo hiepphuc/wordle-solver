@@ -42,23 +42,32 @@ for (const tile of $a('.tile')) {
             tile.nextElementSibling.focus();
         }
     });
+
+    tile.addEventListener('keydown', (event) => {
+        // ^...$: Đảm bảo chỉ có đúng 1 ký tự
+        // a-zA-Z: Chấp nhận cả chữ thường và chữ hoa
+        if (event.key.match(/^[a-zA-Z]$/)) {
+            tile.value = '';
+        }
+
+    });
 }
 
 /* Tạo ra cấu trúc dữ liệu của các tile (mảng các tile) khi người dùng bấm nút #solve-btn
 và thuật toán lọc từ */
 $('#solve-btn').addEventListener('click', () => {
-    const tiles = [...$a('.tile')].map( tile => ({
+    const tiles = [...$a('.tile')].map(tile => ({
         letter: tile.value.toUpperCase(),
         state: tile.className.slice().replace('tile', '').trim()
     }));
 
     // Thuật toán lọc từ
     const filteredWordList = wordList.filter((word) => {
-        
-        return tiles.every(({letter, state}, index) => {
+
+        return tiles.every(({ letter, state }, index) => {
             // Nếu ô trống thì coi như thoả mãn, bỏ qua check
             if (letter === '') return true;
-            
+
             if (state === 'correct' && word[index] === letter) {
                 return true;
             }
